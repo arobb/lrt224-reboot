@@ -23,7 +23,7 @@ function hash_function
   then
     echo -n "$1" | md5
   else
-    echo -n "$1" | md5sum
+    echo -n "$1" | md5sum | sed -n 's/^\([0-9a-f]*\) .*$/\1/p'
   fi
 }
 
