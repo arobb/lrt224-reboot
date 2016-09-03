@@ -15,5 +15,5 @@ vi ./env
 1. Trigger the reboot
 
    ```bash
-./reboot-router.sh
+./router-reboot.sh
 ```
