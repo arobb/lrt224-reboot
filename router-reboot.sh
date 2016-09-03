@@ -18,7 +18,7 @@ router_addr="https://$router_ip"
 # MD5 selection
 function hash_function
 {
-  test md5 2>/dev/null
+  command -v md5 >/dev/null 2>&1
   if [ "$?" -eq "0" ];
   then
     echo -n "$1" | md5
