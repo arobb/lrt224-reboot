@@ -10,6 +10,10 @@
 #  5   Restart trigger failed (Part 2 of 2)
 
 
+# Script directory
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+
 # Get router address
 router_ip=$(netstat -rn | grep 'UG' | awk '{print $2}' | grep '^[0-9]\{1,3\}\.')
 router_addr="https://$router_ip"
@@ -33,12 +37,12 @@ auth_key=$(curl --silent --insecure "$router_addr/cgi-bin/welcome.cgi" | grep "n
 
 
 # Convert the password
-. ./env
+. $DIR/env
 router_pw_hash=$(hash_function "$router_pw$auth_key")
 
 
 # Submit the form
-curl --silent --insecure -X POST -c cookies.txt \
+curl --silent --insecure -X POST -c "$DIR/cookies.txt" \
 -o /dev/null \
 -F "username=$router_un" \
 -F "password=$router_pw_hash" \
@@ -56,7 +60,7 @@ fi
 
 # Restart is two parts
 # Request the restart
-restart_1=$(curl --silent --insecure -X POST -b cookies.txt -c cookies.txt \
+restart_1=$(curl --silent --insecure -X POST -b "$DIR/cookies.txt" -c "$DIR/cookies.txt" \
 -w "%{http_code}" \
 -o /dev/null \
 -F "workType=restart" \
@@ -73,7 +77,7 @@ fi
 
 
 # Now trigger the restart
-restart_2=$(curl --silent --insecure -b cookies.txt \
+restart_2=$(curl --silent --insecure -b "$DIR/cookies.txt" \
 -w "%{http_code}" \
 -o /dev/null \
 "$router_addr/Rebooting.htm")
@@ -87,5 +91,5 @@ fi
 
 
 # Everything seems to have worked fine
-rm cookies.txt 2>/dev/null
+rm "$DIR/cookies.txt" 2>/dev/null
 exit 0
