@@ -1,0 +1,2 @@
+MAILTO=andy@andyrobb.com
+0 3 * * * pi /home/pi/git/lrt224-reboot/router-reboot.sh
